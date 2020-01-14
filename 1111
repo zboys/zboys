@@ -1,0 +1,42 @@
+//伪造引荐来源网址以获取扭曲和带宽
+const Referrer =“ f1726f42-e121-4284-a9fd-4310bfcd20f4”; // ID
+const timesToLoop = 1024; // 10
+const retryTimes = 5; // 10
+
+const https = require（“ https”）;
+const zlib = require（“ zlib”）;
+
+异步函数init（）{
+  for（让i = 0; i <timesToLoop; i ++）{
+    如果（await run（））{
+      console.log（i + 1，“ OK”）;
+    }其他{
+      console.log（i + 1，“错误”）;
+      for（让r = 0; r <retryTimes; r ++）{
+        如果（await run（））{
+          console.log（i + 1，“ Retry＃” +（r + 1），“ OK”）;
+          打破;
+        }其他{
+          console.log（i + 1，“重试编号” +（r + 1），“错误”）；
+          如果（r === retryTimes-1）{
+            返回;
+          }
+        }
+      }
+    }
+  }
+}
+
+异步功能run（）{
+  返回新的Promise（resolve => {
+    const install_id = genString（11）;
+    const postData = JSON.stringify（{
+      键：`$ {genString（43）} =`，
+      install_id：install_id，
+      fcm_token：`$ {install_id}：APA91b $ {genString（134）}`，
+      推荐人：推荐人，
+      warp_enabled：否，
+      tos：new Date（）。toISOString（）。replace（“ Z”，“ +07：00”），
+      类型：“ Android”，
+      区域设置：“ zh_CN”
+    }）;
