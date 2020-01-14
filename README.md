@@ -16,13 +16,17 @@ Trojan1.14
 curl -O https://raw.githubusercontent.com/atrandys/trojan/master/trojan_mult.sh && chmod +x trojan_mult.sh && ./trojan_mult.sh/atrandys/trojan/master/trojan_mult.sh && chmod +x trojan_mult.sh && ./trojan_mult.sh
 
 ss与ssr
+
 ss
+
 wget -N –no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh && bash ss-go.sh
 
 ssr
+
 wget -N –no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh
 
 准备工作与说明
+
 在此需要说明几点！centos 7 bbr(本人用搬瓦工)是自带加速的，只需要把系统自带加速开启就可以了！
 
 bbr
