@@ -36,9 +36,11 @@ wget –no-check-certificate https://raw.githubusercontent.com/cx9208/Linux-NetS
 先申请好自己的域名
 
 https://my.freenom.com
+
 解析自己的域名
 
 https://dash.cloudflare.com/
+
 安装Trojan 安装好后我们继续安装ss
 
 安装完Trojan和ss这一步就做完了！
