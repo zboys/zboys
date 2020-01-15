@@ -1,13 +1,13 @@
 1.安装CentOS 7 64bit mini版
 
-2. 更新系统&安装wget
-
-
 yum -y update
+
+2. 更新系统&安装wget
 
 yum -y install wget
 
 3. 安装Iperf
+
 yum -y install gcc make
 
 cd /tmp
