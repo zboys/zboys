@@ -42,3 +42,9 @@ firewall-cmd --reload
 6. 重启系统
 
 reboot
+
+7.连接服务器
+
+iperf3 -s
+
+
