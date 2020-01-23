@@ -1,0 +1,102 @@
+一、搭建v2ray所用的代码：
+1.sudo -i
+2.date -R
+3.cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+4.bash <(curl -L -s https://install.direct/go.sh)
+5.vi /etc/v2ray/config.json
+6.sudo systemctl restart v2ray
+7.service v2ray status
+
+第5步或者这样：
+1.sudo su - root
+2.passwd root设置root密码。
+3. vi /etc/ssh/sshd_config
+找到PermitRootLogin和PasswordAuthentication,都改为yes
+4. service sshd restart  或者 systemctl restart sshd
+重启SSH服务使修改生效
+5.使用winscp登陆vps
+
+
+V2ray客户端下载：
+1.下载 V2Ray：https://github.com/v2ray/v2ray-core/releases/latest
+2.下载 V2RayN： https://github.com/2dust/v2rayN/releases/latest
+
+
+二、升级内核：
+ 
+1. 载入公钥
+rpm --import https://www.elrepo.org/RPM-GPG-KEY-elrepo.org
+2. 升级安装ELRepo
+rpm -Uvh http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
+3. 载入elrepo-kernel元数据
+yum --disablerepo=\* --enablerepo=elrepo-kernel repolist
+4. 查看可用的rpm包
+yum --disablerepo=\* --enablerepo=elrepo-kernel list kernel*Installed Packages
+5. 安装最新版本的kernel
+yum --disablerepo=\* --enablerepo=elrepo-kernel install  kernel-ml.x86_64  -y
+6. 删除旧版本工具包
+yum remove kernel-tools-libs.x86_64 kernel-tools.x86_64  -y
+7. 安装新版本工具包
+yum --disablerepo=\* --enablerepo=elrepo-kernel install kernel-ml-tools.x86_64  -y
+8. 查看内核插入顺序
+awk -F \' '$1=="menuentry " {print i++ " : " $2}' /etc/grub2.cfg
+
+
+0 : CentOS Linux (4.20.12-1.el7.elrepo.x86_64) 7 (Core)
+1 : CentOS Linux (3.10.0-957.5.1.el7.x86_64) 7 (Core)
+2 : CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
+3 : CentOS Linux (0-rescue-ca0f6fb3c5f24478abc0a2e275281d7a) 7 (Core)
+说明：默认新内核是从头插入，默认启动顺序也是从0开始（当前顺序还未生效），或者使用：
+
+9. 查看当前实际启动顺序
+grub2-editenv list
+10. 设置默认启动
+grub2-set-default 'CentOS Linux (4.20.12-1.el7.elrepo.x86_64) 7 (Core)'
+grub2-editenv list
+
+或者直接设置数值
+
+grub2-set-default 0　　// 0代表当前第一行，也就是上面的4.20.12版本那一行内容
+grub2-editenv list
+11. 重启并检查
+reboot 
+uname -r 
+
+三、开启BBR的方法
+
+TCP BBR 是谷歌出品的 TCP 拥塞控制算法。BBR目的是要尽量跑满带宽，并且尽量不要有排队的情况。BBR 可以起到单边加速 TCP 连接的效果
+TCP-BBR的目标就是最大化利用网络上瓶颈链路的带宽。一条网络链路就像一条水管，要想最大化利用这条水管，最好的办法就是给这跟水管灌满水
+BBR解决了两个问题：
+在有一定丢包率的网络链路上充分利用带宽。非常适合高延迟，高带宽的网络链路。
+降低网络链路上的buffer占用率，从而降低延迟。非常适合慢速接入网络的用户。
+Google 开源了其 TCP BBR 拥塞控制算法，并提交到了 Linux 内核，从 4.9 开始，Linux 内核已经用上了该算法.
+
+1、修改系统变量
+echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+2、保存生效
+sysctl -p
+3、查看内核是否已开启BBR
+sysctl net.ipv4.tcp_available_congestion_control
+显示以下即已开启：
+# sysctl net.ipv4.tcp_available_congestion_control
+net.ipv4.tcp_available_congestion_control = bbr cubic reno
+4、查看BBR是否启动
+lsmod | grep bbr
+显示以下即启动成功：
+# lsmod | grep bbr
+tcp_bbr                20480  14
+
+四、开启了BBR还能安装其他BBR吗？比如BBR plus、魔改BBR等？
+
+超级一键加速脚本，bbr 原版/魔改/plus/锐速 四合一
+wget "https://github.com/chiakge/Linux-NetSpeed/raw/master/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+
+注意：如果wget发现报错command not found、是因为没有安装wget软件包，执行这句：yum -y install wget
+
+
+五、测速
+我们购买vps后可能需要做些速度测试，你可以使用之前介绍过的秋水大佬的测速脚本来测试（脚本第一项就是测试cachefly下载），也可以使用speedtest来测。如果你有自己的镜像站的话直接拖镜像是个不错的选择，如果没有的话怎么能找个现成的文件来测试呢，这个时候就可以选择手动下载cachefly的测试文件来测试下载速度。常用的文件就是100mb.test，大小是100MB。
+wget http://cachefly.cachefly.net/100mb.test
+wget http://repos.mia.lax-noc.com/speedtests/1gb.bin 1G文件
+更多文件下载地址：http://repos.mia.lax-noc.com/speedtests/ 里面有最大100TB的文件
