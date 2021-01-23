@@ -7,23 +7,11 @@ Trojan
 
 yum -y install wget   先执行这个
 
-Trojan1.13
 
-curl -O https://raw.githubusercontent.com/atrandys/trojan/master/trojan_centos7.sh && chmod +x trojan_centos7.sh && ./trojan_centos7.sh
+2020Trojan
 
-Trojan1.14
+bash <(curl -L -s https://raw.githubusercontent.com/atrandys/trojan/master/trojan_mult.sh)
 
-curl -O https://raw.githubusercontent.com/atrandys/trojan/master/trojan_mult.sh && chmod +x trojan_mult.sh && ./trojan_mult.sh
-
-ss与ssr
-
-ss
-
-wget -N –no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ss-go.sh && chmod +x ss-go.sh && bash ss-go.sh
-
-ssr
-
-wget -N –no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubiBackup/doubi/master/ssr.sh && chmod +x ssr.sh && bash ssr.sh
 
 准备工作与说明
 
