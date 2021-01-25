@@ -58,4 +58,4 @@ clash电脑端怎么刷入自己的节点呢如下:
 
        感谢！不足之处还请见谅！
 
-zboys  2020. 冬 https://zboys.ml/
+zboys  2020. 冬 https://zboa.ga/
