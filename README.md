@@ -17,9 +17,6 @@ bash <(curl -L -s https://raw.githubusercontent.com/atrandys/trojan/master/troja
 
 在此需要说明几点！centos 7 bbr(本人用搬瓦工)是自带加速的，只需要把系统自带加速开启就可以了！
 
-bbr
-
-wget –no-check-certificate https://raw.githubusercontent.com/cx9208/Linux-NetSpeed/master/tcp.sh && chmod +x tcp.sh && ./tcp.sh
 
 先申请好自己的域名
 
